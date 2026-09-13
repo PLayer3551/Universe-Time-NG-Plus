@@ -11,13 +11,13 @@ tmp_update.push(_=>{
     tmp.stGain = FUNCS.stGain()
     tmp.calcUniTime = FUNCS.calcUniTime()
 
-    tmp.ended = player.uniTime.gte(4.34548152e17) && tmp.ready
+    tmp.ended = player.uniTime.gte('e1e100') && tmp.ready
 })
 
 el.update.main = _=>{
     if (!tmp.ready && tmp.open) {
-        tmp.el.loadingDiv.changeStyle("opacity", Math.max(1-tmp.time/0.2,0))
-        if (tmp.time>0.2) {
+        tmp.el.loadingDiv.changeStyle("opacity", Math.max(1-tmp.time/0.25,0))
+        if (tmp.time>0.25) {
             tmp.el.loadingDiv.setDisplay(false)
             tmp.ready = true
         }
@@ -51,10 +51,15 @@ const FUNCS = {
     calcUniTime() {
         let x = player.spacetime.div(1e43)
         if (hasUpg("st",5)) x = x.mul(tmp.upgs_eff.st[5])
+        if (hasUpg("at",4)) x = x.pow(tmp.upgs_eff.at[4])
+        if (hasUpg("at",8)) x = x.mul(tmp.upgs_eff.at[8])
+        if (hasUpg("inf",6)) x = x.pow(tmp.upgs_eff.inf[6])
+        if (hasUpg("ft",9)) x = x.mul(tmp.upgs_eff.ft[9])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[2])
 
         let p = 0.5, q = 2
         if (hasUpg("inf",2)) p = p**tmp.upgs_eff.inf[2], q = q*tmp.upgs_eff.inf[2]
+        if (hasUpg("inf",7)) p = p**tmp.upgs_eff.inf[7], q = q*tmp.upgs_eff.inf[7]
 
         tmp.stSoftcaps = 0
         for (let i = 0; i <= 8; i++) {
@@ -71,21 +76,30 @@ const FUNCS = {
             x = x.softcap(31557600,0.01,0)
             tmp.stSoftcaps++
         }
-        return x.min(4.34548152e17)
+        if (x.gte(4.34548152e17)) {
+            x = x.softcap(4.34548152e17,0.01,0)
+            tmp.stSoftcaps++
+        }
+        return x.min('e1e100')
     },
     stGain() {
         let x = E(hasUpg("st",0)?1:0).mul(tmp.inflationEff)
         if (hasUpg("st",1)) x = x.mul(tmp.upgs_eff.st[1])
         if (hasUpg("st",2)) x = x.mul(20)
+        if (hasUpg("st",15)) x = x.mul(tmp.upgs_eff.st[15])
         if (hasUpg("inf",0)) x = x.mul(tmp.upgs_eff.inf[0])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[0])
         if (hasUpg("ft",0)) x = x.mul(tmp.upgs_eff.ft[0])
+        if (hasUpg("ft",12)) x = x.mul('e50000')
+        if (hasUpg("qu",7)) x = x.pow(0.9)
         
         if (hasUpg("ft",5)) x = x.pow(1.1)
 
         let s = 0.9
+        let s2 = 0.95
         if (hasUpg("at",1)) s **= tmp.upgs_eff.at[1]
-        return x.softcap('e8000',s,2)
+        return x.softcap('e8000',s,2).softcap('e1000000',s2,2)
+
     },
     inflation: {
         gain() {
@@ -184,6 +198,10 @@ function format(ex, acc=4, max=9, type='sc') {
 
 function formatTime(ex) {
     ex = E(ex)
+    if (ex.gte(4.34548152e26)) return format(ex.div(4.34548152e26),4,12)+" universe giga-years"
+    if (ex.gte(4.34548152e23)) return format(ex.div(4.34548152e23),4,12)+" universe mega-years"
+    if (ex.gte(4.34548152e20)) return format(ex.div(4.34548152e20),4,12)+" universe kilo-years"
+    if (ex.gte(4.34548152e17)) return format(ex.div(4.34548152e17),4,12)+" universe years"
     if (ex.gte(31557600)) return format(ex.div(31557600),4,12)+" years"
     if (ex.gte(1)) return format(ex,4,12)+"s"
     if (ex.gte(1e-3)) return format(ex.mul(1e3),4,12)+"ms"

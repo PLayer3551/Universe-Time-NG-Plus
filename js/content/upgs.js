@@ -50,6 +50,7 @@ const UPGS = {
                 cost: E(1e8),
                 effect() {
                     let x = player.spacetime.add(1).log10().add(1).pow(2)
+                    if (hasUpg("at",6)) x = x.pow(60)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -69,6 +70,7 @@ const UPGS = {
                 cost: E(1e16),
                 effect() {
                     let x = player.uniTime.mul(1e44).add(1).log10().root(1.5)
+                    if (hasUpg("at",6)) x = x.pow(3777)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -102,6 +104,38 @@ const UPGS = {
                 unl() { return player.story>=6 },
                 desc: `Neutrons are 10% stronger.`,
                 cost: E('e111111'),
+            },{
+                unl() { return player.story>=7 },
+                desc: `Proton are 40% stronger.`,
+                cost: E('e150000'),
+            },{
+                unl() { return player.story>=7 },
+                desc: `Proton Better Stronger based on spacetime.`,
+                cost: E('e210000'),
+                effect() {
+                    let x = player.spacetime.add(1).log10().log10().sub(3.75)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story>=7 },
+                desc: `Better Spacetime Gain based on Universe Time.`,
+                cost: E('e490000'),
+                effect() {
+                    let x = player.uniTime.add(1).pow(512)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story>=7 },
+                desc: `Proton Better Stronger based on supersymmetry particles.`,
+                cost: E('e775000'),
+                effect() {
+                    let x = player.susy.particles.add(1).log10().log10().sub(3.75).pow(6.25)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+
             },
         ],
     },
@@ -124,6 +158,7 @@ const UPGS = {
                 cost: E("e3600"),
                 effect() {
                     let x = player.uniTime.mul(1e44).add(1).log10().add(1).pow(1.25)
+                    if (hasUpg("at",6)) x = x.pow(3333)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -136,7 +171,7 @@ const UPGS = {
                 desc: `Universe time's formula softcap is weaker based on Inflation.`,
                 cost: E("e1e7"),
                 effect() {
-                    let x = E(0.9).pow(player.inflation.log10().add(1).log10().root(2)).toNumber();
+                    let x = E(0.9).pow(player.inflation.log10().add(1).log10().root(2)).max(0.1).toNumber();
                     return x
                 },
                 effDesc(x) { return format((1-x)*100)+"% weaker" },
@@ -153,6 +188,55 @@ const UPGS = {
                 unl() { return player.story >= 6 },
                 desc: `Protons are 25% stronger.`,
                 cost: E("ee460"),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain more atoms based on Universe Time [Only 1e16 Seconds].`,
+                cost: E("ee560"),
+                effect() {
+                    let x = player.uniTime.div(1e16)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Universe Time Better Formula on Rewards.`,
+                cost: E("ee1186"),
+                effect() {
+                    let x = E(1000).add(player.rewards.add(1)).div(1000)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Universe time's formula softcap is weaker based on Quarks.`,
+                cost: E("ee1237"),
+                effect() {
+                    let x = E(0.9).pow(player.quarks.log10().add(1).log10().root(1.75)).max(0.25).toNumber();
+                    return x
+                },
+                effDesc(x) { return format((1-x)*100)+"% weaker" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Fabric Time Upgrade 3 is Stronger x1.02.`,
+                cost: E("ee1500"),
+           },{
+                unl() { return player.story >= 7 },
+                desc: `Reward's requirement is cheaper By ^1.04.`,
+                cost: E("ee1570"),
+           },{
+                unl() { return player.story >= 7 },
+                desc: `Gain Much More Atom based on Supersymmetry Particles / Max Formula: ^1.05.`,
+                cost: E("ee1722"),
+                effect() {
+                    let x = player.susy.particles.add(1).log('e4.3e5').softcap(1.05,0,0)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+           },{
+                unl() { return player.story >= 7 },
+                desc: `Gain x75 More Atoms.`,
+                cost: E("ee1950"),
+
             },
         ],
     },
@@ -174,6 +258,7 @@ const UPGS = {
                 cost: E(50),
                 effect() {
                     let x = player.fabricTime.add(1).pow(0.75)
+                    if (hasUpg("at",6)) x = x.pow(15)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -182,6 +267,7 @@ const UPGS = {
                 cost: E(100),
                 effect() {
                     let x = player.susy.particles.add(1).log10().add(1).pow(1.5)
+                    if (hasUpg("at",6)) x = x.pow(3.5)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -190,6 +276,7 @@ const UPGS = {
                 cost: E(1000),
                 effect() {
                     let x = player.fabricTime.add(1).log10().root(3)
+                    if (hasUpg("inf",8)) x = x.mul(1.02)
                     return x
                 },
                 effDesc(x) { return "^2 → ^"+format(x.add(2)) },
@@ -215,6 +302,41 @@ const UPGS = {
                 unl() { return player.story >= 4 },
                 desc: `Raise Quarks gain to the 1.025th power.`,
                 cost: E(1e100),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain 1e1000% of Supersymmetry particles gained on reset.`,
+                cost: E(1e242),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Universe Time Better Formula on the fabric of time.`,
+                cost: E("e465"),
+                effect() {
+                    let x = player.fabricTime.add(1).pow(1.5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Raise Atoms gain to the 1.05th power.`,
+                cost: E('e515'),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Atoms Upgrade 1 Is Stronger Formula on the fabric of time.`,
+                cost: E("3.595e616"),
+                effect() {
+                    let x = player.fabricTime.add(1).log10().pow(1.5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Spacetime gain to the e50,000 Multiplier.`,
+                cost: E('2e625'),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Supersymmetry particles gain to the e20,000 Multiplier.`,
+                cost: E('2e685'),
+
             },
         ],
     },
@@ -236,6 +358,7 @@ const UPGS = {
                 cost: E(300),
                 effect() {
                     let x = player.inflation.add(1).log10().add(1).log10().add(1)
+                    if (hasUpg("at",6)) x = x.pow(2.25)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -283,6 +406,33 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain Better Supersymmetry based on quarks / But You Raise spacetime's exponent to the 0.9th power.`,
+                cost: E(1e168),
+                effect() {
+                    let x = player.quarks.add(1).add(1).pow(100)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain more quarks based on atom.`,
+                cost: E(2e236),
+                effect() {
+                    let x = player.atoms.add(1).log10().add(1).pow(5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Proton Better Stronger based on quarks.`,
+                cost: E(1e262),
+                effect() {
+                    let x = player.quarks.add(1).log10()
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
     },
@@ -304,6 +454,7 @@ const UPGS = {
                 cost: E(3e4),
                 effect() {
                     let x = player.atoms.add(1).root(3)
+                    if (hasUpg("ft",11)) x = x.mul(tmp.upgs_eff.ft[11])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -322,6 +473,54 @@ const UPGS = {
                 unl() { return player.story >= 6 },
                 desc: `Electrons are 2.5% stronger.`,
                 cost: E(1e19),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Universe time Better formula is multiplied by Atom.`,
+                cost: E(1e22),
+                effect() {
+                    let x = player.atoms.add(1).log10().div(20)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Reward's requirement is cheaper By x1.2.`,
+                cost: E(1e29),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `St Upgrade 6 & 8 And inf Upgrade 1 And ft Upgrade 1 & 2 And Quarks Upgrade 1 is Now Better.`,
+                cost: E(4e32),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Reward's requirement is cheaper based on Atom.`,
+                cost: E(1e33),
+                effect() {
+                    let x = player.atoms.add(1).log10().log10().log(1.48)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x cheaper" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Universe Time Better Formula^2 based on Atom.`,
+                cost: E(1e37),
+                effect() {
+                    let x = player.atoms.add(1).pow(15555)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain 30x more Atoms.`,
+                cost: E(5e40),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain 100x more Atoms.`,
+                cost: E(1e43),
+            },{
+                unl() { return player.story >= 7 },
+                desc: `Gain 1e12x more Quarks And Wait To Reach Kilo-Universe Years Era = Now Unlock More Upgrades^2.`,
+                cost: E(1e50),
+
             },
         ],
     },

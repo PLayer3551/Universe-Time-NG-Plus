@@ -144,7 +144,7 @@ function loadGame() {
     load(localStorage.getItem("universeTimeSave"))
     updateTemp()
     setupHTML()
-    setInterval(loop, 50)
+    setInterval(loop, 1)
     setInterval(save,60000)
     setTimeout(_=>{
         tmp.open = true
