@@ -88,6 +88,7 @@ const UPGS = {
                 cost: E('e8100'),
                 effect() {
                     let x = player.spacetime.add(1).log10().add(1).pow(0.8)
+                    if (hasUpg("st",17)) x = x.mul(tmp.upgs_eff.st[17])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -97,6 +98,7 @@ const UPGS = {
                 cost: E('e37000'),
                 effect() {
                     let x = player.spacetime.add(1).log10().add(1).pow(0.75)
+                    if (hasUpg("st",17)) x = x.mul(tmp.upgs_eff.st[17])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -114,6 +116,7 @@ const UPGS = {
                 cost: E('e210000'),
                 effect() {
                     let x = player.spacetime.add(1).log10().log10().sub(3.75)
+                    if (hasUpg("qu",11)) x = x.mul(tmp.upgs_eff.qu[11])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -123,6 +126,7 @@ const UPGS = {
                 cost: E('e490000'),
                 effect() {
                     let x = player.uniTime.add(1).pow(512)
+                    if (hasUpg("ft",17)) x = x.pow(tmp.upgs_eff.ft[17])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -135,7 +139,24 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
-
+            },{
+                unl() { return player.story>=8 },
+                desc: `Spacetime Upgrade 10 & 11 based on spacetime.`,
+                cost: E('e1.5e6'),
+                effect() {
+                    let x = player.spacetime.add(1).log10().log(2)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return hasUpg("at",12) },
+                desc: `Quarks Upgrade 5 Stronger based on the fabric of time.`,
+                cost: E('e1.79e6'),
+                effect() {
+                    let x = player.fabricTime.add(1).pow(0.1).root(2)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
     },
@@ -159,6 +180,7 @@ const UPGS = {
                 effect() {
                     let x = player.uniTime.mul(1e44).add(1).log10().add(1).pow(1.25)
                     if (hasUpg("at",6)) x = x.pow(3333)
+                    if (hasUpg("inf",15)) x = x.pow(tmp.upgs_eff.inf[15])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -194,6 +216,7 @@ const UPGS = {
                 cost: E("ee560"),
                 effect() {
                     let x = player.uniTime.div(1e16)
+                    if (hasUpg("inf",14)) x = x.mul(tmp.upgs_eff.inf[14])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -203,6 +226,7 @@ const UPGS = {
                 cost: E("ee1186"),
                 effect() {
                     let x = E(1000).add(player.rewards.add(1)).div(1000)
+                    if (hasUpg("inf",13)) x = x.mul(tmp.upgs_eff.inf[13])
                     return x
                 },
                 effDesc(x) { return "^"+format(x) },
@@ -219,11 +243,11 @@ const UPGS = {
                 unl() { return player.story >= 7 },
                 desc: `Fabric Time Upgrade 3 is Stronger x1.02.`,
                 cost: E("ee1500"),
-           },{
+            },{
                 unl() { return player.story >= 7 },
                 desc: `Reward's requirement is cheaper By ^1.04.`,
                 cost: E("ee1570"),
-           },{
+            },{
                 unl() { return player.story >= 7 },
                 desc: `Gain Much More Atom based on Supersymmetry Particles / Max Formula: ^1.05.`,
                 cost: E("ee1722"),
@@ -232,11 +256,46 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return "^"+format(x) },
-           },{
+            },{
                 unl() { return player.story >= 7 },
                 desc: `Gain x75 More Atoms.`,
                 cost: E("ee1950"),
-
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Speed inflation growth Better Formula Based on Rewards.`,
+                cost: E("ee1987"),
+                effect() {
+                    let x = E(10000).add(player.rewards.add(1)).div(10000)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Inflation Upgrade 7 Formula Based on Atoms.`,
+                cost: E("ee3000"),
+                effect() {
+                    let x = player.atoms.add(1).log10().log(9).sub(0.825)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Inflation Upgrade 6 Stronger Formula Based on Inflation.`,
+                cost: E("3.333ee3333"),
+                effect() {
+                    let x = player.inflation.add(1).log(1e100).log10()
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Inflation Upgrade 1 Better Formula Based on Atom.`,
+                cost: E("ee3685"),
+                effect() {
+                    let x = player.atoms.add(1).root(128)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
             },
         ],
     },
@@ -259,6 +318,7 @@ const UPGS = {
                 effect() {
                     let x = player.fabricTime.add(1).pow(0.75)
                     if (hasUpg("at",6)) x = x.pow(15)
+                    if (hasUpg("ft",14)) x = x.pow(tmp.upgs_eff.ft[14])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -268,6 +328,7 @@ const UPGS = {
                 effect() {
                     let x = player.susy.particles.add(1).log10().add(1).pow(1.5)
                     if (hasUpg("at",6)) x = x.pow(3.5)
+                    if (hasUpg("ft",15)) x = x.pow(tmp.upgs_eff.ft[15])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -336,7 +397,37 @@ const UPGS = {
                 unl() { return player.story >= 7 },
                 desc: `Supersymmetry particles gain to the e20,000 Multiplier.`,
                 cost: E('2e685'),
-
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Fabric Time Upgrade 1 Is Stronger Formula on the fabric of time.`,
+                cost: E("3.88e808"),
+                effect() {
+                    let x = player.fabricTime.add(1).log10().log(4)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Fabric Time Upgrade 2 Is Stronger Formula on Quarks.`,
+                cost: E("e1066"),
+                effect() {
+                    let x = player.quarks.add(1).log10().log(8)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Spacetime Gain Softcap^2 is 2.5% Weaker.`,
+                cost: E('e1270'),
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Spacetime Upgrade 15 Is Better Formula on Universe Time.`,
+                cost: E("e1285"),
+                effect() {
+                    let x = player.uniTime.add(1).pow(0.25).log(8)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
             },
         ],
     },
@@ -385,6 +476,7 @@ const UPGS = {
                 cost: E(1e38),
                 effect() {
                     let x = E(1.25).pow(player.rewards)
+                    if (hasUpg("st",18)) x = x.mul(tmp.upgs_eff.st[18])
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -433,6 +525,29 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Raise Supersymmetry Particles exponent to the 1.25th power / But You Raise universe time exponent to the 0.72th power.`,
+                cost: E(5e277),
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Spacetime Upgrade 14 Stronger based on quarks.`,
+                cost: E(2e282),
+                effect() {
+                    let x = player.quarks.add(1).log10().root(1.5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Gain More Quarks based on quarks.`,
+                cost: E(3e297),
+                effect() {
+                    let x = player.quarks.add(1).log10().root(1.25).pow(1.5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+
             },
         ],
     },
@@ -520,7 +635,19 @@ const UPGS = {
                 unl() { return player.story >= 7 },
                 desc: `Gain 1e12x more Quarks And Wait To Reach Kilo-Universe Years Era = Now Unlock More Upgrades^2.`,
                 cost: E(1e50),
-
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Unlock More Upgrade For Spacetime.`,
+                cost: E(1e60),
+            },{
+                unl() { return player.story >= 8 },
+                desc: `Electron Are Stronger based on Atom.`,
+                cost: E(2e66),
+                effect() {
+                    let x = player.atoms.add(1).log(1.2)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
     },

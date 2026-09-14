@@ -5,6 +5,7 @@ const QUARKS = {
         if (hasUpg("qu",1)) x = x.mul(tmp.upgs_eff.qu[1])
         if (hasUpg("qu",2)) x = x.mul(tmp.upgs_eff.qu[2])
         if (hasUpg("qu",8)) x = x.mul(tmp.upgs_eff.qu[8])
+        if (hasUpg("qu",12)) x = x.mul(tmp.upgs_eff.qu[12])
         if (hasUpg("st",10)) x = x.mul(tmp.upgs_eff.st[10])
         if (hasUpg("at",0)) x = x.mul(tmp.upgs_eff.at[0])
         if (hasUpg("at",11)) x = x.mul(1e12)
@@ -39,6 +40,7 @@ const QUARKS = {
         if (hasUpg("st",16) && i == 0) r = r.mul(tmp.upgs_eff.st[16])
         if (hasUpg("qu",9) && i == 0) r = r.mul(tmp.upgs_eff.qu[9])
         if (hasUpg("at",3) && i == 2) r = r.mul(1.025)
+        if (hasUpg("at",13) && i == 2) r = r.mul(tmp.upgs_eff.at[13])
         let x = E(1)
         if (i == 0) {
             x = q.add(1).pow(r.mul(1/6)).softcap(1e10,0.5,2).softcap(1e100,0.4,2)

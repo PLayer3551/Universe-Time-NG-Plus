@@ -55,6 +55,7 @@ const FUNCS = {
         if (hasUpg("at",8)) x = x.mul(tmp.upgs_eff.at[8])
         if (hasUpg("inf",6)) x = x.pow(tmp.upgs_eff.inf[6])
         if (hasUpg("ft",9)) x = x.mul(tmp.upgs_eff.ft[9])
+        if (hasUpg("qu",10)) x = x.pow(0.72)
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[2])
 
         let p = 0.5, q = 2
@@ -98,6 +99,7 @@ const FUNCS = {
         let s = 0.9
         let s2 = 0.95
         if (hasUpg("at",1)) s **= tmp.upgs_eff.at[1]
+        if (hasUpg("ft",16)) s2 **= 0.975
         return x.softcap('e8000',s,2).softcap('e1000000',s2,2)
 
     },
@@ -112,6 +114,7 @@ const FUNCS = {
             if (player.story > 1) e = e.mul(tmp.susy.powerEff[1])
             if (hasUpg("qu",4)) e = e.mul(tmp.upgs_eff.qu[4])
             if (hasUpg("qu",3)) e = e.pow(1.1)
+            if (hasUpg("inf",12)) e = e.pow(tmp.upgs_eff.inf[12])
             return x.pow(e)
         },
         eff() {

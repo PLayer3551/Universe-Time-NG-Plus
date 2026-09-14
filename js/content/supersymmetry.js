@@ -35,6 +35,7 @@ function getSusyResetGain() {
     if (hasUpg("ft",5)) x = x.pow(1.1)
     if (hasUpg("ft",13)) x = x.mul('e20000')
     if (hasUpg("qu",7)) x = x.mul(tmp.upgs_eff.qu[7])
+    if (hasUpg("qu",10)) x = x.pow(1.25)
     return x.softcap(1e3,0.6,0).floor()
 }
 
